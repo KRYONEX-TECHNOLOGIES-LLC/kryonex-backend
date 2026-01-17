@@ -8,7 +8,6 @@ from datetime import datetime
 
 app = FastAPI()
 
-
 @app.get("/health")
 async def health_check():
     return {
@@ -17,11 +16,16 @@ async def health_check():
         "timestamp": datetime.utcnow().isoformat()
     }
 
+@app.head("/health")
+async def health_head():
+    return
+
 # ENV VARIABLES (FROM RAILWAY)
 RETELL_API_KEY = os.getenv("RETELL_API_KEY")
 RETELL_AGENT_ID = os.getenv("RETELL_AGENT_ID")
 KRYONEX_SECRET = os.getenv("KRYONEX_SECRET")
 RETELL_FROM_NUMBER = os.getenv("RETELL_FROM_NUMBER", "+12185795523")
+
 
 
 class LeadPayload(BaseModel):

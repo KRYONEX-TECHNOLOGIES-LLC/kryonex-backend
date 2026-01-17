@@ -4,15 +4,25 @@ import httpx
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Header, Body, Query
 from pydantic import BaseModel
+from datetime import datetime
 
 app = FastAPI()
+
+
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "ok",
+        "service": "kryonex-backend",
+        "timestamp": datetime.utcnow().isoformat()
+    }
 
 # ENV VARIABLES (FROM RAILWAY)
 RETELL_API_KEY = os.getenv("RETELL_API_KEY")
 RETELL_AGENT_ID = os.getenv("RETELL_AGENT_ID")
-KRYONEX_SECRET = os.getenv("KRYONEX_SECRET")  # used as x-api-key AND funnel token
-
+KRYONEX_SECRET = os.getenv("KRYONEX_SECRET")
 RETELL_FROM_NUMBER = os.getenv("RETELL_FROM_NUMBER", "+12185795523")
+
 
 class LeadPayload(BaseModel):
     name: str
